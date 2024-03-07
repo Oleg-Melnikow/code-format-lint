@@ -1,0 +1,6 @@
+**/dist
+
+# Ignore all HTML files:
+**/*.html
+
+.validate-branch-namerc.js
