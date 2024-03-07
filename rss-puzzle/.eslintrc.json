@@ -18,7 +18,7 @@
       "es6": true,
       "browser": true
   },
-  "ignorePatterns": ["webpack.config.js"],
+  "ignorePatterns": ["webpack.config.js", ".validate-branch-namerc.hs"],
   "rules": {
       "prettier/prettier": "error",
       "no-debugger": "off",

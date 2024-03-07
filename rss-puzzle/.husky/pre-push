@@ -1,2 +1,2 @@
 cd rss-puzzle
-npx --no-install validate-branch-name
+npx validate-branch-name
