@@ -1,15 +1,27 @@
 import createElement from 'helpers/createElement';
-import { InputClassType } from 'types';
+import validateInput from 'helpers/validateInput';
+import disableLofinButton from 'helpers/disableLofinButton';
+import { InputClassType, State } from 'types';
 
 class InputClass implements InputClassType {
   inputArray: string[];
 
+  private state: State;
+
   constructor() {
     this.inputArray = ['surname', 'name'];
+    this.state = {
+      name: '',
+      surname: '',
+    };
   }
 
   draw(): HTMLElement[] {
     return this.createFormLogin();
+  }
+
+  getState(): State {
+    return this.state;
   }
 
   private createFormLogin(): HTMLElement[] {
@@ -26,12 +38,38 @@ class InputClass implements InputClassType {
         required: 'required',
       });
 
+      if (input instanceof HTMLInputElement) {
+        input.addEventListener('input', this.changeInput.bind(this));
+        input.addEventListener('blur', this.blurInput.bind(this));
+      }
+
       label.append(input);
+      label.append(createElement('div', { class: 'helper-text' }));
 
       return label;
     });
 
     return inputTags;
+  }
+
+  changeInput(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      const { id, value } = event.target;
+      if (id === 'name') {
+        this.state = { ...this.state, name: value };
+      } else {
+        this.state = { ...this.state, surname: value };
+      }
+      this.state = { ...this.state };
+      validateInput(event.target);
+    }
+    disableLofinButton(this.state);
+  }
+
+  blurInput(event: Event): void {
+    if (event.target instanceof HTMLInputElement) {
+      validateInput(event.target);
+    }
   }
 }
 
