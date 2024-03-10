@@ -27,8 +27,10 @@ class InputClass implements InputClassType {
   private createFormLogin(): HTMLElement[] {
     const inputTags = this.inputArray.map((inputItem: string): HTMLElement => {
       let labelText = inputItem;
+      let inputValue = this.state.surname;
       if (inputItem === 'name') {
         labelText = 'first name';
+        inputValue = this.state.name;
       }
       const label = createElement('label', { for: inputItem }, labelText);
       const input = createElement('input', {
@@ -36,6 +38,8 @@ class InputClass implements InputClassType {
         type: 'text',
         placeholder: `Enter your ${inputItem}`,
         required: 'required',
+        value: inputValue,
+        minlength: inputItem === 'name' ? '3' : '4',
       });
 
       if (input instanceof HTMLInputElement) {
