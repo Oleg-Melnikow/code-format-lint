@@ -38,6 +38,8 @@ module.exports = {
     extensions: ['.ts', '.js', 'json'],
     alias: {
       assets: path.resolve(__dirname, './src/assets'),
+      helpers: path.resolve(__dirname, './src/helpers'),
+      types: path.resolve(__dirname, './src/types'),
     },
   },
   plugins: [
