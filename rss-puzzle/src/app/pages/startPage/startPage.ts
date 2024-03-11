@@ -14,10 +14,13 @@ class StartPage {
 
   contentBlocks: string[];
 
-  constructor() {
+  callback: () => void;
+
+  constructor(callback: () => void) {
     this.content = new GameInfo();
     this.userGreeting = new UserInfo();
     this.contentBlocks = ['start', 'user'];
+    this.callback = callback;
   }
 
   draw(root: HTMLElement): void {
@@ -38,7 +41,7 @@ class StartPage {
         attributes: { class: 'button start-btn' },
         textContent: 'Start',
       },
-      this.playApp
+      this.playApp.bind(this)
     );
 
     startPage.append(button.render());
@@ -50,6 +53,8 @@ class StartPage {
       'rss-puzzle-login',
       JSON.stringify({ ...initialState, currentPage: 'main' })
     );
+    initialState.updatePage('main');
+    this.callback();
   }
 }
 
