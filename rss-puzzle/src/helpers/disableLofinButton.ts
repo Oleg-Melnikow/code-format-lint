@@ -1,13 +1,14 @@
-import { State } from 'types';
+import { State } from 'types/interfaces';
 
-function disableLofinButton(state: State): void {
+function disableLoginButton(state: State): void {
   const { name, surname } = state;
   const reg = /^[A-Z][\\-a-zA-z]+$/;
+  const isValidName = reg.test(name) && name.length >= 3;
+  const isValidSurname = reg.test(surname) && surname.length >= 4;
 
-  const isValidName = reg.test(name);
-  const isValidSurname = reg.test(surname);
   const loginButton: HTMLElement | null =
     document.querySelector('.login-button');
+
   if (!(loginButton instanceof HTMLElement)) {
     throw new Error('Element helper-text not foud');
   }
@@ -19,4 +20,4 @@ function disableLofinButton(state: State): void {
   }
 }
 
-export default disableLofinButton;
+export default disableLoginButton;
