@@ -1,5 +1,5 @@
 import createElement from 'helpers/createElement';
-import { Login } from 'types';
+import { Login } from 'types/interfaces';
 import LoginPage from './pages/login/login';
 
 class App {

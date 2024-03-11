@@ -1,7 +1,7 @@
 import createElement from 'helpers/createElement';
 import validateInput from 'helpers/validateInput';
 import disableLofinButton from 'helpers/disableLofinButton';
-import { InputClassType, State } from 'types';
+import { InputClassType, State } from 'types/interfaces';
 
 class InputClass implements InputClassType {
   inputArray: string[];
