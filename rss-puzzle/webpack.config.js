@@ -41,6 +41,7 @@ module.exports = {
       helpers: path.resolve(__dirname, './src/helpers'),
       types: path.resolve(__dirname, './src/types'),
       state: path.resolve(__dirname, './src/state'),
+      components: path.resolve(__dirname, './src/components'),
     },
   },
   plugins: [
