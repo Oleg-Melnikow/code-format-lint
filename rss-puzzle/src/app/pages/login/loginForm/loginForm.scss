@@ -17,7 +17,7 @@ $error-color: rgb(255, 0, 0);
 }
 
 .login-form {
-  min-width: 400px;
+  width: 450px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -61,7 +61,7 @@ $error-color: rgb(255, 0, 0);
   }
 
   label .helper-text {
-    height: 25px;
+    min-height: 25px;
     padding: 5px 5px 0;
     color: $error-color;
     font-size: 14px;

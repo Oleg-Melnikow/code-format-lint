@@ -1,5 +1,6 @@
 import createElement from 'helpers/createElement';
 import { LoginFormType, InputClassType } from 'types/interfaces';
+import { saveUserData } from 'helpers/saveUserData';
 import InputClass from '../inputClass/inputClass';
 import './loginForm.scss';
 
@@ -36,7 +37,7 @@ class LoginForm implements LoginFormType {
   private callback(event: SubmitEvent): void {
     event.preventDefault();
     const state = this.input.getState();
-    console.log(state);
+    saveUserData(state);
   }
 }
 

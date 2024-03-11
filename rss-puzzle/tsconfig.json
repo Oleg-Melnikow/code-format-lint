@@ -13,6 +13,7 @@
       "assets/*": ["assets/*"],
       "helpers/*": ["helpers/*"],
       "types/*": ["types/*"],
+      "state/*": ["state/*"],
     },
     "outDir": "./dist",
   },
