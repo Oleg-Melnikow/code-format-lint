@@ -1,0 +1,43 @@
+@mixin flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin text-style($size, $spacing) {
+  font-size: $size;
+  letter-spacing: $spacing;
+}
+
+.start-page {
+  width: 100vw;
+  height: 100vh;
+  @include flex;
+  background: url('../../../assets/start-page.jpg') center center;
+  background-size: cover;
+}
+
+.start-info {
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  @include flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: 10px;
+  color: #fff;
+  @include text-style(22px, 1px);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0px 20px 36px -10px rgba(46, 229, 157, 0.4);
+}
+
+.name-app {
+  @include text-style(32px, 5px);
+  text-align: center;
+}
+
+@media (max-width: 580px) {
+  .start-info {
+    max-width: 90%;
+  }
+}
