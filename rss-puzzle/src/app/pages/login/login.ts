@@ -1,5 +1,5 @@
 import createElement from 'helpers/createElement';
-import { Login, LoginFormType } from 'types';
+import { Login, LoginFormType } from 'types/interfaces';
 import LoginForm from './loginForm/loginForm';
 import './login.scss';
 

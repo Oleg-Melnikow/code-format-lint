@@ -1,5 +1,5 @@
 import createElement from 'helpers/createElement';
-import { LoginFormType, InputClassType } from 'types';
+import { LoginFormType, InputClassType } from 'types/interfaces';
 import InputClass from '../inputClass/inputClass';
 import './loginForm.scss';
 
@@ -23,11 +23,20 @@ class LoginForm implements LoginFormType {
       class: 'login-button',
       type: 'submit',
       value: 'Login',
+      disabled: 'disabled',
     });
 
     [loginButton, ...inputTags].forEach((element) => form.prepend(element));
 
+    form.addEventListener('submit', this.callback.bind(this));
+
     return form;
+  }
+
+  private callback(event: SubmitEvent): void {
+    event.preventDefault();
+    const state = this.input.getState();
+    console.log(state);
   }
 }
 

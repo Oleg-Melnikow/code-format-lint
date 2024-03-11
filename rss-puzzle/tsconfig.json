@@ -11,6 +11,8 @@
     "noImplicitAny": true,
     "paths": {
       "assets/*": ["assets/*"],
+      "helpers/*": ["helpers/*"],
+      "types/*": ["types/*"],
     },
     "outDir": "./dist",
   },
