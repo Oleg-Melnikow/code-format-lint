@@ -3,14 +3,18 @@ type State = {
   surname: string;
 };
 
+type ContentInfo = { className: string; description: string };
+
 interface Login {
   loginForm: LoginFormType;
   draw(root: HTMLElement): void;
 }
 
-interface LoginFormType {
+interface BaseClass {
   draw(root: HTMLElement): void;
 }
+
+type LoginFormType = BaseClass;
 
 interface InputClassType {
   inputArray: string[];
@@ -18,4 +22,4 @@ interface InputClassType {
   getState(): State;
 }
 
-export { Login, LoginFormType, InputClassType, State };
+export { Login, LoginFormType, InputClassType, State, BaseClass, ContentInfo };
