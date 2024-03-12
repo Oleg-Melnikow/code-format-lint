@@ -34,6 +34,15 @@ interface Configurate {
   textContent?: string;
 }
 
+interface WordType {
+  audioExample: string;
+  id: number;
+  textExample: string;
+  textExampleTranslate: string;
+  word: string;
+  wordTranslate: string;
+}
+
 export {
   Login,
   LoginFormType,
@@ -43,4 +52,5 @@ export {
   ContentInfo,
   Configurate,
   PadeId,
+  WordType,
 };
