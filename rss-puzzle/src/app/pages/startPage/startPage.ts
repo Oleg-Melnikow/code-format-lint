@@ -1,5 +1,7 @@
 import createElement from 'helpers/createElement';
 import { BaseClass } from 'types/interfaces';
+import { initialState } from 'state/initialState';
+import CustomButton from 'components/customButton/customButton';
 import GameInfo from './gameInfo/gameInfo';
 import UserInfo from './userInfo/userInfo';
 
@@ -12,10 +14,13 @@ class StartPage {
 
   contentBlocks: string[];
 
-  constructor() {
+  callback: () => void;
+
+  constructor(callback: () => void) {
     this.content = new GameInfo();
     this.userGreeting = new UserInfo();
     this.contentBlocks = ['start', 'user'];
+    this.callback = callback;
   }
 
   draw(root: HTMLElement): void {
@@ -30,7 +35,26 @@ class StartPage {
       startPage.append(container);
     });
 
+    const button = new CustomButton(
+      {
+        element: 'button',
+        attributes: { class: 'button start-btn' },
+        textContent: 'Start',
+      },
+      this.playApp.bind(this)
+    );
+
+    startPage.append(button.render());
     root.append(startPage);
+  }
+
+  private playApp(): void {
+    localStorage.setItem(
+      'rss-puzzle-login',
+      JSON.stringify({ ...initialState, currentPage: 'main' })
+    );
+    initialState.updatePage('main');
+    this.callback();
   }
 }
 

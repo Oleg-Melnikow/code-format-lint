@@ -1,6 +1,7 @@
 import createElement from 'helpers/createElement';
 import { LoginFormType, InputClassType } from 'types/interfaces';
 import { saveUserData } from 'helpers/saveUserData';
+import CustomButton from 'components/customButton/customButton';
 import InputClass from '../inputClass/inputClass';
 import './loginForm.scss';
 
@@ -20,14 +21,18 @@ class LoginForm implements LoginFormType {
     const form = createElement('form', { name: 'login', class: 'login-form' });
     const inputTags = this.input.draw();
 
-    const loginButton = createElement('input', {
-      class: 'login-button',
-      type: 'submit',
-      value: 'Login',
-      disabled: 'disabled',
+    const button = new CustomButton({
+      element: 'button',
+      attributes: {
+        class: 'button login-button',
+        type: 'submit',
+        value: 'Login',
+        disabled: 'disabled',
+      },
+      textContent: 'Login',
     });
 
-    [loginButton, ...inputTags].forEach((element) => form.prepend(element));
+    [button.render(), ...inputTags].forEach((element) => form.prepend(element));
 
     form.addEventListener('submit', this.callback.bind(this));
 

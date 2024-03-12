@@ -22,4 +22,18 @@ interface InputClassType {
   getState(): State;
 }
 
-export { Login, LoginFormType, InputClassType, State, BaseClass, ContentInfo };
+interface Configurate {
+  element: string;
+  attributes?: Record<string, string>;
+  textContent?: string;
+}
+
+export {
+  Login,
+  LoginFormType,
+  InputClassType,
+  State,
+  BaseClass,
+  ContentInfo,
+  Configurate,
+};
