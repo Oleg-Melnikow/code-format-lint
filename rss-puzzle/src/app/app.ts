@@ -50,7 +50,7 @@ class App {
       const userInfo = JSON.parse(state);
       const { user, currentPage } = userInfo;
       initialState.updateState(user, currentPage);
-      this.renderPage(currentPage, root);
+      this.renderPage('start', root);
     } else {
       this.login.draw(root);
     }
