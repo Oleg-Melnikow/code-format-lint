@@ -8,8 +8,11 @@ import './loginForm.scss';
 class LoginForm implements LoginFormType {
   input: InputClassType;
 
-  constructor() {
+  callback: (padeId: string) => void;
+
+  constructor(callback: (padeId: string) => void) {
     this.input = new InputClass();
+    this.callback = callback;
   }
 
   draw(parent: HTMLElement): void {
@@ -34,15 +37,16 @@ class LoginForm implements LoginFormType {
 
     [button.render(), ...inputTags].forEach((element) => form.prepend(element));
 
-    form.addEventListener('submit', this.callback.bind(this));
+    form.addEventListener('submit', this.submitLoginForm.bind(this));
 
     return form;
   }
 
-  private callback(event: SubmitEvent): void {
+  private submitLoginForm(event: SubmitEvent): void {
     event.preventDefault();
     const state = this.input.getState();
-    saveUserData(state);
+    saveUserData(state, 'start');
+    this.callback('start');
   }
 }
 

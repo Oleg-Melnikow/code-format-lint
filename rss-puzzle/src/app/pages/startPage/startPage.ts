@@ -1,6 +1,7 @@
 import createElement from 'helpers/createElement';
 import { BaseClass } from 'types/interfaces';
 import { initialState } from 'state/initialState';
+import { saveUserData } from 'helpers/saveUserData';
 import CustomButton from 'components/customButton/customButton';
 import GameInfo from './gameInfo/gameInfo';
 import UserInfo from './userInfo/userInfo';
@@ -14,9 +15,9 @@ class StartPage {
 
   contentBlocks: string[];
 
-  callback: () => void;
+  callback: (padeId: string) => void;
 
-  constructor(callback: () => void) {
+  constructor(callback: (padeId: string) => void) {
     this.content = new GameInfo();
     this.userGreeting = new UserInfo();
     this.contentBlocks = ['start', 'user'];
@@ -49,12 +50,10 @@ class StartPage {
   }
 
   private playApp(): void {
-    localStorage.setItem(
-      'rss-puzzle-login',
-      JSON.stringify({ ...initialState, currentPage: 'main' })
-    );
-    initialState.updatePage('main');
-    this.callback();
+    if (initialState.user) {
+      saveUserData(initialState.user, 'main');
+    }
+    this.callback('main');
   }
 }
 

@@ -5,6 +5,12 @@ type State = {
 
 type ContentInfo = { className: string; description: string };
 
+enum PadeId {
+  Start = 'start',
+  Main = 'main',
+  Login = 'login',
+}
+
 interface Login {
   loginForm: LoginFormType;
   draw(root: HTMLElement): void;
@@ -36,4 +42,5 @@ export {
   BaseClass,
   ContentInfo,
   Configurate,
+  PadeId,
 };
