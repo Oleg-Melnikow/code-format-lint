@@ -6,8 +6,11 @@ import './login.scss';
 class LoginPage implements Login {
   loginForm: LoginFormType;
 
-  constructor() {
-    this.loginForm = new LoginForm();
+  callback: (padeId: string) => void;
+
+  constructor(callback: (padeId: string) => void) {
+    this.callback = callback;
+    this.loginForm = new LoginForm(this.callback);
   }
 
   draw(root: HTMLElement): void {
