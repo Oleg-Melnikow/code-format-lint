@@ -8,7 +8,7 @@ class GameBlock {
   async draw(root: HTMLElement): Promise<void> {
     await getRounds();
     const container = createElement('div', { class: 'game-container' });
-    const cardsBlock = createElement('div', { class: 'cards-block' });
+    const cardsBlock = createElement('div', { class: 'source-block' });
     const resultBlock = createElement('div', { class: 'result-block' });
 
     if (initialState.roundsData) {
@@ -20,7 +20,7 @@ class GameBlock {
       wordsRandomOrder(wordArray).forEach((word, posiiton) => {
         const card = new CardWord(word);
         card.draw(resultBlock, 'result', posiiton);
-        card.draw(cardsBlock, 'random', posiiton);
+        card.draw(cardsBlock, 'source', posiiton);
       });
     }
 

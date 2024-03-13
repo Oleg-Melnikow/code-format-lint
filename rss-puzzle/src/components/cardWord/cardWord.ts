@@ -10,7 +10,7 @@ class CardWord {
 
   async draw(
     root: HTMLElement,
-    typeBlock: 'result' | 'random',
+    typeBlock: 'result' | 'source',
     posiiton: number
   ): Promise<void> {
     const wrap = createElement('div', {
@@ -19,7 +19,7 @@ class CardWord {
     });
     let card = null;
 
-    if (typeBlock === 'random') {
+    if (typeBlock === 'source') {
       const attributes: Record<string, string> = {
         class: 'card-word',
         'data-word': this.card,
