@@ -13,8 +13,11 @@ type StateApp = {
   updateRounds(data: RoundsData): void;
   currentPage: PageType;
   roundsData: RoundsData | null;
+  currentRound: Round | null;
+  currentSentence: WordType | null;
   gameStatus: GameStatusType;
   changeGameStatus(data: GameStatusType): void;
+  updateCurrentSentence(): void;
 };
 
 type LevelDataType = {
@@ -47,6 +50,8 @@ const initialState: StateApp = {
   },
   currentPage: 'login',
   roundsData: null,
+  currentRound: null,
+  currentSentence: null,
 
   updateState(user, page?: PageType): void {
     this.user = user;
@@ -56,9 +61,24 @@ const initialState: StateApp = {
   },
   updateRounds(data: RoundsData): void {
     this.roundsData = data;
+    const [round] = data.rounds;
+    const [sentence] = round.words;
+    this.currentRound = round;
+    this.currentSentence = sentence;
+    console.log(round, sentence, 'item');
   },
   changeGameStatus(data: GameStatusType): void {
     this.gameStatus = data;
+  },
+  updateCurrentSentence(): void {
+    if (this.currentSentence && this.currentRound) {
+      const { id } = this.currentSentence;
+      const { words } = this.currentRound;
+      const positionWods = words.findIndex((x) => x.id === id);
+      const [current] = words.slice(positionWods + 1);
+      this.currentSentence = current;
+      console.log(this.currentSentence.textExample);
+    }
   },
 };
 
