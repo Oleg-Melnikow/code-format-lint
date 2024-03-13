@@ -3,6 +3,7 @@ import { getRounds, initialState } from 'state/initialState';
 import './gameBlock.scss';
 import CardWord from 'components/cardWord/cardWord';
 import wordsRandomOrder from 'helpers/wordsRandomOrder';
+import CustomButton from 'components/customButton/customButton';
 
 class GameBlock {
   async draw(root: HTMLElement): Promise<void> {
@@ -24,9 +25,23 @@ class GameBlock {
       });
     }
 
-    container.append(resultBlock);
-    container.append(cardsBlock);
+    const button = new CustomButton(
+      {
+        element: 'button',
+        attributes: { class: 'button continue-btn', disabled: 'disabled' },
+        textContent: 'Continue',
+      },
+      this.continueGame.bind(this)
+    );
+
+    [resultBlock, cardsBlock, button.render()].forEach((item) =>
+      container.append(item)
+    );
     root.append(container);
+  }
+
+  continueGame(): void {
+    console.log('continueGame');
   }
 }
 

@@ -28,6 +28,14 @@ $main-green: #2ee59d;
   &.start-btn {
     width: 550px;
   }
+  &.continue-btn {
+    width: 300px;
+    margin: 0 auto;
+    &:disabled {
+      color: #555;
+      background: #cacaca;
+    }
+  }
 
   &:hover {
     cursor: pointer;
