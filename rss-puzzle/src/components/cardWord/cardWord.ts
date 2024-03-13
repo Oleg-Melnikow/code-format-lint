@@ -81,6 +81,7 @@ class CardWord {
       }
 
       cardWrap?.append(word);
+      this.changeDisabledContinueBtn(true);
     }
   }
 
@@ -89,6 +90,40 @@ class CardWord {
     if (item) {
       item.append(word);
       item.setAttribute('data-status', 'full');
+    }
+    this.checkCorrectSentence(resultBlock);
+  }
+
+  private checkCorrectSentence(resultBlock: Element): void {
+    const isFullSentence =
+      resultBlock.querySelectorAll(`[data-status='empty']`).length === 0;
+
+    if (isFullSentence) {
+      const arrayWords = [...resultBlock.querySelectorAll('.card-word')];
+      const checkSentence = initialState.currentSentence?.textExample;
+
+      const resultSentence = arrayWords
+        .map((wordElement) => {
+          if (!(wordElement instanceof HTMLElement)) {
+            throw new Error('Element not found');
+          }
+          return wordElement.dataset.word;
+        })
+        .join(' ');
+
+      this.changeDisabledContinueBtn(checkSentence !== resultSentence);
+    }
+  }
+
+  changeDisabledContinueBtn(isDisabled: boolean): void {
+    const button = document.querySelector('.continue-btn');
+    if (!(button instanceof HTMLElement)) {
+      throw new Error('Element not found');
+    }
+    if (isDisabled) {
+      button.setAttribute('disabled', 'disabled');
+    } else {
+      button.removeAttribute('disabled');
     }
   }
 }
