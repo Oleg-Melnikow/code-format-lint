@@ -5,9 +5,9 @@ import './customButton.scss';
 class CustomButton {
   configurate: Configurate;
 
-  callback?: () => void;
+  callback?: (event: Event) => void;
 
-  constructor(configurate: Configurate, callback?: () => void) {
+  constructor(configurate: Configurate, callback?: (event: Event) => void) {
     this.configurate = configurate;
     this.callback = callback;
   }
@@ -17,7 +17,7 @@ class CustomButton {
     const button = createElement(element, attributes, textContent);
 
     if (this.callback) {
-      button.addEventListener('click', this.callback);
+      button.addEventListener('click', (event) => this.callback?.(event));
     }
 
     return button;

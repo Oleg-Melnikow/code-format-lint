@@ -28,7 +28,7 @@ class GameBlock {
         attributes: { class: 'button continue-btn', disabled: 'disabled' },
         textContent: 'Continue',
       },
-      this.continueGame
+      (event) => this.continueGame.bind(this)(event)
     );
 
     this.renderBlockWords(resultBlock, cardsBlock);
@@ -71,8 +71,28 @@ class GameBlock {
     });
   }
 
-  continueGame(): void {
-    console.log('continueGame');
+  continueGame(event: Event): void {
+    if (event.target instanceof HTMLElement) {
+      event.target.setAttribute('disabled', 'disabled');
+    }
+
+    initialState.updateCurrentSentence();
+
+    const resultBlock = document.querySelector('.result-block');
+    if (resultBlock) {
+      resultBlock.classList.add('completed');
+    }
+
+    const sourceBlock: HTMLElement | null =
+      document.querySelector('.source-block');
+    const resultItem = this.createResultBlock();
+
+    if (sourceBlock) {
+      sourceBlock.innerHTML = '';
+      this.renderBlockWords(resultItem, sourceBlock);
+    }
+
+    this.containerResults.append(resultItem);
   }
 }
 
