@@ -1,4 +1,5 @@
 import createElement from 'helpers/createElement';
+import { initialState } from 'state/initialState';
 
 class CardWord {
   card: string;
@@ -46,31 +47,48 @@ class CardWord {
       throw new Error('Element not found');
     }
 
-    const element = event.target;
-
-    const resultBlock = document.querySelector('.result-block');
+    const resultId = initialState.currentSentence?.id;
+    const resultBlock = document.querySelector(
+      `[data-result_id='${resultId}']`
+    );
     const sourceBlock = document.querySelector('.source-block');
     const isResultBlock = resultBlock?.contains(event.target);
+    const isCompleted = !!event.target.closest('.completed');
 
-    if (resultBlock && !isResultBlock) {
-      const item = resultBlock.querySelector(`[data-status='empty']`);
-      if (item) {
-        item.append(element);
-        item.setAttribute('data-status', 'full');
-      }
+    if (resultBlock && !isResultBlock && !isCompleted) {
+      this.moveToResult(resultBlock, event.target);
     }
+
     if (isResultBlock && sourceBlock) {
-      const positionWord = event.target.dataset.position;
-      const resultWrap: HTMLElement | null = event.target.parentElement;
+      this.moveFromResultToSource(isCompleted, event.target, sourceBlock);
+    }
+  }
+
+  private moveFromResultToSource(
+    isCompleted: boolean,
+    word: HTMLElement,
+    sourceBlock: Element
+  ): void {
+    if (!isCompleted) {
+      const positionWord = word.dataset.position;
+      const resultWrap: HTMLElement | null = word.parentElement;
+      const cardWrap = sourceBlock.querySelector(
+        `[data-index='${positionWord}']`
+      );
 
       if (resultWrap) {
         resultWrap.setAttribute('data-status', 'empty');
       }
 
-      const cardWrap = sourceBlock.querySelector(
-        `[data-index='${positionWord}']`
-      );
-      cardWrap?.append(event.target);
+      cardWrap?.append(word);
+    }
+  }
+
+  private moveToResult(resultBlock: Element, word: HTMLElement): void {
+    const item = resultBlock.querySelector(`[data-status='empty']`);
+    if (item) {
+      item.append(word);
+      item.setAttribute('data-status', 'full');
     }
   }
 }
