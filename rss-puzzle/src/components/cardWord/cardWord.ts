@@ -1,5 +1,4 @@
 import createElement from 'helpers/createElement';
-import { initialState } from 'state/initialState';
 
 class CardWord {
   card: string;
@@ -10,16 +9,24 @@ class CardWord {
 
   async draw(
     root: HTMLElement,
-    typeBlock: 'result' | 'random',
+    typeBlock: 'result' | 'source',
     posiiton: number
   ): Promise<void> {
-    const wrap = createElement('div', {
+    const attributesWrap = {
       class: 'card-wrap',
       'data-index': `${posiiton}`,
+    };
+
+    let wrap = createElement('div', {
+      ...attributesWrap,
+      'data-status': 'empty',
     });
+
     let card = null;
 
-    if (typeBlock === 'random') {
+    if (typeBlock === 'source') {
+      wrap = createElement('div', attributesWrap);
+
       const attributes: Record<string, string> = {
         class: 'card-word',
         'data-word': this.card,
@@ -35,26 +42,35 @@ class CardWord {
 
   chooseCard(event: Event): void {
     event.preventDefault();
-    const { limit, count } = initialState.gameStatus;
+    if (!(event.target instanceof HTMLElement)) {
+      throw new Error('Element not found');
+    }
 
-    if (limit >= count) {
-      const block = document.querySelector('.result-block');
+    const element = event.target;
 
-      if (!(event.target instanceof HTMLElement)) {
-        throw new Error('Element not found');
+    const resultBlock = document.querySelector('.result-block');
+    const sourceBlock = document.querySelector('.source-block');
+    const isResultBlock = resultBlock?.contains(event.target);
+
+    if (resultBlock && !isResultBlock) {
+      const item = resultBlock.querySelector(`[data-status='empty']`);
+      if (item) {
+        item.append(element);
+        item.setAttribute('data-status', 'full');
+      }
+    }
+    if (isResultBlock && sourceBlock) {
+      const positionWord = event.target.dataset.position;
+      const resultWrap: HTMLElement | null = event.target.parentElement;
+
+      if (resultWrap) {
+        resultWrap.setAttribute('data-status', 'empty');
       }
 
-      const element: HTMLElement = event.target;
-
-      if (block) {
-        const item = block.querySelector(`[data-index='${count}']`);
-
-        if (item) {
-          item.append(element);
-        }
-
-        initialState.gameStatus.count += 1;
-      }
+      const cardWrap = sourceBlock.querySelector(
+        `[data-index='${positionWord}']`
+      );
+      cardWrap?.append(event.target);
     }
   }
 }
