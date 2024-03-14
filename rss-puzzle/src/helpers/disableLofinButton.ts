@@ -1,4 +1,5 @@
 import { State } from 'types/interfaces';
+import { findElement } from './findElement';
 
 function disableLoginButton(state: State): void {
   const { name, surname } = state;
@@ -6,12 +7,7 @@ function disableLoginButton(state: State): void {
   const isValidName = reg.test(name) && name.length >= 3;
   const isValidSurname = reg.test(surname) && surname.length >= 4;
 
-  const loginButton: HTMLElement | null =
-    document.querySelector('.login-button');
-
-  if (!(loginButton instanceof HTMLElement)) {
-    throw new Error('Element helper-text not foud');
-  }
+  const loginButton = findElement('.login-button');
 
   if (isValidName && isValidSurname) {
     loginButton.removeAttribute('disabled');

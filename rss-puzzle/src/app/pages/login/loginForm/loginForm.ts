@@ -47,6 +47,7 @@ class LoginForm implements LoginFormType {
     const state = this.input.getState();
     saveUserData(state, 'start');
     this.callback('start');
+    this.input.resetInputs();
   }
 }
 

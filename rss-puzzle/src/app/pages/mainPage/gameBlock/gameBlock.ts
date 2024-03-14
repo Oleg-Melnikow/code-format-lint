@@ -5,6 +5,7 @@ import CardWord from 'components/cardWord/cardWord';
 import wordsRandomOrder from 'helpers/wordsRandomOrder';
 import CustomButton from 'components/customButton/customButton';
 import changeDisabledButton from 'helpers/changeDisabledButton';
+import transformButton from 'helpers/transformButton';
 
 class GameBlock {
   containerResults: HTMLElement;
@@ -22,18 +23,14 @@ class GameBlock {
     const cardsBlock = createElement('div', { class: 'source-block' });
     const resultBlock = this.createResultBlock();
 
-    const button = new CustomButton(
-      {
-        element: 'button',
-        attributes: { class: 'button continue-btn', disabled: 'disabled' },
-        textContent: 'Continue',
-      },
-      (event) => this.continueGame.bind(this)(event)
-    );
     const checkButton = new CustomButton(
       {
         element: 'button',
-        attributes: { class: 'button check-btn', disabled: 'disabled' },
+        attributes: {
+          class: 'button check-btn',
+          disabled: 'disabled',
+          'data-button': 'check',
+        },
         textContent: 'Check',
       },
       (event) => this.checkSentence.bind(this)(event)
@@ -45,12 +42,9 @@ class GameBlock {
     }
     containerResults.append(resultBlock);
 
-    [
-      containerResults,
-      cardsBlock,
-      button.render(),
-      checkButton.render(),
-    ].forEach((item) => container.append(item));
+    [containerResults, cardsBlock, checkButton.render()].forEach((item) =>
+      container.append(item)
+    );
 
     root.append(container);
   }
@@ -85,12 +79,7 @@ class GameBlock {
     });
   }
 
-  continueGame(event: Event): void {
-    if (event.target instanceof HTMLElement) {
-      event.target.setAttribute('disabled', 'disabled');
-      changeDisabledButton(true, 'check');
-    }
-
+  continueGame(): void {
     const resultBlock = document.querySelector(
       `[data-result_id='${initialState.currentSentence?.id}']`
     );
@@ -117,11 +106,18 @@ class GameBlock {
     }
 
     this.containerResults.append(resultItem);
+    transformButton('check');
+    changeDisabledButton(true);
   }
 
   checkSentence(event: Event): void {
     event.preventDefault();
-    if (initialState.currentSentence) {
+    if (!(event.target instanceof HTMLElement)) {
+      throw new Error('Element not found');
+    }
+    const { button } = event.target.dataset;
+
+    if (initialState.currentSentence && button === 'check') {
       const { textExample, id } = initialState.currentSentence;
       const wordArray = textExample.split(' ');
       const resultBlock = document.querySelector(`[data-result_id='${id}']`);
@@ -133,13 +129,16 @@ class GameBlock {
           }
           const word = el;
           if (el.dataset.word === wordArray[i]) {
-            console.log(el.dataset.word, wordArray[i]);
             word.style.border = '2px solid #00ff00';
           } else {
             word.style.border = '2px solid red';
           }
         });
       }
+    }
+
+    if (button === 'continue') {
+      this.continueGame();
     }
   }
 }

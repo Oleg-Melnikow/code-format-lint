@@ -26,6 +26,7 @@ interface InputClassType {
   inputArray: string[];
   draw(): HTMLElement[];
   getState(): State;
+  resetInputs(): void;
 }
 
 interface Configurate {
