@@ -1,3 +1,4 @@
+import changeDisabledButton from 'helpers/changeDisabledButton';
 import createElement from 'helpers/createElement';
 import { initialState } from 'state/initialState';
 
@@ -61,6 +62,10 @@ class CardWord {
 
     if (isResultBlock && sourceBlock) {
       this.moveFromResultToSource(isCompleted, event.target, sourceBlock);
+      const isClue = event.target.hasAttribute('style');
+      if (isClue) {
+        event.target.removeAttribute('style');
+      }
     }
   }
 
@@ -81,7 +86,8 @@ class CardWord {
       }
 
       cardWrap?.append(word);
-      this.changeDisabledContinueBtn(true);
+      changeDisabledButton(true, 'continue');
+      changeDisabledButton(true, 'check');
     }
   }
 
@@ -111,19 +117,8 @@ class CardWord {
         })
         .join(' ');
 
-      this.changeDisabledContinueBtn(checkSentence !== resultSentence);
-    }
-  }
-
-  changeDisabledContinueBtn(isDisabled: boolean): void {
-    const button = document.querySelector('.continue-btn');
-    if (!(button instanceof HTMLElement)) {
-      throw new Error('Element not found');
-    }
-    if (isDisabled) {
-      button.setAttribute('disabled', 'disabled');
-    } else {
-      button.removeAttribute('disabled');
+      changeDisabledButton(checkSentence !== resultSentence, 'continue');
+      changeDisabledButton(false, 'check');
     }
   }
 }
