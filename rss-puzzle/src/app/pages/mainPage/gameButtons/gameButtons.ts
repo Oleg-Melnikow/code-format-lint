@@ -51,7 +51,6 @@ class GameButtons {
     if (initialState.currentSentence) {
       const { textExample } = initialState.currentSentence;
       const wordArray = textExample.split(' ');
-      console.log(textExample);
       initialState.changeGameStatus({ count: 0, limit: wordArray.length - 1 });
 
       wordsRandomOrder(wordArray).forEach((word, position) => {
@@ -86,6 +85,7 @@ class GameButtons {
     }
 
     initialState.updateCurrentSentence();
+    this.changeHint(initialState.currentSentence?.textExampleTranslate || '');
 
     const sourceBlock = findElement('.source-block');
     sourceBlock.innerHTML = '';
@@ -183,6 +183,11 @@ class GameButtons {
     });
 
     return resultBlock;
+  }
+
+  changeHint(hint: string): void {
+    const hintElement = findElement('.hint-content');
+    hintElement.textContent = hint;
   }
 }
 

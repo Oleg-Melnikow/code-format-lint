@@ -1,21 +1,25 @@
 import createElement from 'helpers/createElement';
 import { getRounds, initialState } from 'state/initialState';
 import { BaseClass } from 'types/interfaces';
-import './gameBlock.scss';
 import CardWord from 'components/cardWord/cardWord';
 import wordsRandomOrder from 'helpers/wordsRandomOrder';
 import GameButtons from '../gameButtons/gameButtons';
+import HintBlock from '../hintBlock/hintBlock';
+import './gameBlock.scss';
 
 class GameBlock {
   containerResults: HTMLElement;
 
   gameButtons: BaseClass;
 
+  hint: BaseClass;
+
   constructor() {
     this.containerResults = createElement('div', {
       class: 'results-container',
     });
     this.gameButtons = new GameButtons();
+    this.hint = new HintBlock();
   }
 
   async draw(root: HTMLElement): Promise<void> {
@@ -24,6 +28,8 @@ class GameBlock {
     const container = createElement('div', { class: 'game-container' });
     const cardsBlock = createElement('div', { class: 'source-block' });
     const resultBlock = this.createResultBlock();
+
+    this.hint.draw(container);
 
     this.renderBlockWords(resultBlock, cardsBlock);
     if (containerResults.childNodes.length) {
