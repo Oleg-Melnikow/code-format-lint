@@ -1,6 +1,8 @@
 import changeDisabledButton from 'helpers/changeDisabledButton';
+import checkFullSentence from 'helpers/checkFullSentence';
 import createElement from 'helpers/createElement';
 import { findElement } from 'helpers/findElement';
+import removeAttribute from 'helpers/removeAttribute';
 import transformButton from 'helpers/transformButton';
 import { initialState } from 'state/initialState';
 
@@ -64,10 +66,7 @@ class CardWord {
 
     if (isResultBlock && sourceBlock) {
       this.moveFromResultToSource(isCompleted, event.target, sourceBlock);
-      const isClue = event.target.hasAttribute('style');
-      if (isClue) {
-        event.target.removeAttribute('style');
-      }
+      removeAttribute(event.target, 'style');
     }
   }
 
@@ -108,10 +107,7 @@ class CardWord {
   }
 
   private checkCorrectSentence(resultBlock: Element): void {
-    const isFullSentence =
-      resultBlock.querySelectorAll(`[data-status='empty']`).length === 0;
-
-    if (isFullSentence) {
+    if (checkFullSentence(resultBlock)) {
       const arrayWords = [...resultBlock.querySelectorAll('.card-word')];
       const checkSentence = initialState.currentSentence?.textExample;
 
