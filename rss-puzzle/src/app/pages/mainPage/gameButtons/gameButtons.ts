@@ -8,6 +8,7 @@ import transformButton from 'helpers/transformButton';
 import { findElement } from 'helpers/findElement';
 import instanceHtml from 'helpers/instanceHtml';
 import removeAttribute from 'helpers/removeAttribute';
+import checkFullSentence from 'helpers/checkFullSentence';
 import './gameButtons.scss';
 
 class GameButtons {
@@ -101,6 +102,7 @@ class GameButtons {
     if (!(event.target instanceof HTMLElement)) {
       throw new Error('Element not found');
     }
+    changeDisabledButton(false, '.complete-btn');
     const { button } = event.target.dataset;
 
     if (initialState.currentSentence && button === 'check') {
@@ -134,43 +136,19 @@ class GameButtons {
 
     if (initialState.currentSentence) {
       const { textExample, id } = initialState.currentSentence;
-      const { resultBlock, items } = this.clearResultBlock(id);
+      const resultBlock = this.sentenceAssembly(id, textExample);
 
-      let itemsWord = [...items];
-      const wordArray = textExample.split(' ');
+      resultBlock.classList.add('completed');
+      changeDisabledButton(true, '.complete-btn');
 
-      [...resultBlock.querySelectorAll('.card-wrap')].forEach((wrapItem) => {
-        const wrap = instanceHtml(wrapItem);
-        const { index } = wrap.dataset;
-        const wordElement = itemsWord.find((word, i) => {
-          const isTrue =
-            instanceHtml(word).dataset.word === wordArray[+`${index}` || 0];
-          if (isTrue) {
-            itemsWord = [...itemsWord.slice(0, i), ...itemsWord.slice(i + 1)];
-          }
-          return isTrue;
-        });
-
-        if (wordElement) {
-          wrap.append(instanceHtml(wordElement));
-          wrap.setAttribute('data-status', 'full');
-        }
-      });
-
-      const isFullSentence =
-        resultBlock.querySelectorAll(`[data-status='empty']`).length === 0;
-
-      if (isFullSentence) {
+      if (checkFullSentence(resultBlock)) {
         changeDisabledButton(false);
         transformButton('continue');
       }
     }
   }
 
-  private clearResultBlock(id: number): {
-    resultBlock: HTMLElement;
-    items: Element[];
-  } {
+  private sentenceAssembly(id: number, textExample: string): HTMLElement {
     const resultBlock = findElement(`[data-result_id='${id}']`);
     const sourceBlock = findElement(`.source-block`);
     const items = [
@@ -182,7 +160,29 @@ class GameButtons {
       wrapItem.dataset.status = 'empty';
       wrapItem.innerHTML = '';
     });
-    return { resultBlock, items };
+    let itemsWord = [...items];
+    const wordArray = textExample.split(' ');
+
+    [...resultBlock.querySelectorAll('.card-wrap')].forEach((wrapItem) => {
+      const wrap = instanceHtml(wrapItem);
+      const { index } = wrap.dataset;
+      const wordElement = itemsWord.find((word, i) => {
+        const isTrue =
+          instanceHtml(word).dataset.word === wordArray[+`${index}` || 0];
+        if (isTrue) {
+          itemsWord = [...itemsWord.slice(0, i), ...itemsWord.slice(i + 1)];
+        }
+        return isTrue;
+      });
+
+      if (wordElement) {
+        removeAttribute(wordElement, 'style');
+        wrap.append(instanceHtml(wordElement));
+        wrap.setAttribute('data-status', 'full');
+      }
+    });
+
+    return resultBlock;
   }
 }
 
