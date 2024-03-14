@@ -1,0 +1,12 @@
+.hint {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &-content {
+    font-size: 20px;
+    text-align: center;
+    color: white;
+  }
+}
