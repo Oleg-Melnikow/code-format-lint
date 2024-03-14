@@ -56,6 +56,10 @@ class InputClass implements InputClassType {
     return inputTags;
   }
 
+  resetInputs(): void {
+    this.state = { name: '', surname: '' };
+  }
+
   changeInput(event: Event): void {
     if (event.target instanceof HTMLInputElement) {
       const { id, value } = event.target;
