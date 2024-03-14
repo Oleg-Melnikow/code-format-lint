@@ -1,5 +1,7 @@
 import changeDisabledButton from 'helpers/changeDisabledButton';
 import createElement from 'helpers/createElement';
+import { findElement } from 'helpers/findElement';
+import transformButton from 'helpers/transformButton';
 import { initialState } from 'state/initialState';
 
 class CardWord {
@@ -86,8 +88,13 @@ class CardWord {
       }
 
       cardWrap?.append(word);
-      changeDisabledButton(true, 'continue');
-      changeDisabledButton(true, 'check');
+
+      const button = findElement('.check-btn');
+      if (button.dataset.button !== 'check') {
+        transformButton('check');
+      }
+
+      changeDisabledButton(true);
     }
   }
 
@@ -117,8 +124,10 @@ class CardWord {
         })
         .join(' ');
 
-      changeDisabledButton(checkSentence !== resultSentence, 'continue');
-      changeDisabledButton(false, 'check');
+      if (checkSentence === resultSentence) {
+        transformButton('continue');
+      }
+      changeDisabledButton(false);
     }
   }
 }
