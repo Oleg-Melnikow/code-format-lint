@@ -1,8 +1,7 @@
-function changeDisabledButton(isDisabled: boolean, type: string): void {
-  const button = document.querySelector(`.${type}-btn`);
-  if (!(button instanceof HTMLElement)) {
-    throw new Error('Element not found');
-  }
+import { findElement } from './findElement';
+
+function changeDisabledButton(isDisabled: boolean): void {
+  const button = findElement(`.check-btn`);
   if (isDisabled) {
     button.setAttribute('disabled', 'disabled');
   } else {
