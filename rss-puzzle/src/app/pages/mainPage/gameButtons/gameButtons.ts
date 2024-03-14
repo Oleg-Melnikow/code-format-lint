@@ -79,6 +79,7 @@ class GameButtons {
     );
 
     if (resultBlock) {
+      resultBlock.classList.add('completed');
       const words = [...resultBlock.querySelectorAll('.card-word')];
       [...words].forEach((el) => removeAttribute(el, 'style'));
     }
@@ -127,6 +128,10 @@ class GameButtons {
 
   private autoComplete(event: Event): void {
     event.preventDefault();
+    if (!(event.target instanceof HTMLElement)) {
+      throw new Error('Element not found');
+    }
+
     if (initialState.currentSentence) {
       const { textExample, id } = initialState.currentSentence;
       const { resultBlock, items } = this.clearResultBlock(id);
