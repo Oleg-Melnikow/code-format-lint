@@ -1,9 +1,12 @@
 import changeDisabledButton from 'helpers/changeDisabledButton';
 import checkFullSentence from 'helpers/checkFullSentence';
+import completeSectence from 'helpers/completeSectence';
 import createElement from 'helpers/createElement';
 import { findElement } from 'helpers/findElement';
+import instanceHtml from 'helpers/instanceHtml';
 import removeAttribute from 'helpers/removeAttribute';
 import transformButton from 'helpers/transformButton';
+import visibleHint from 'helpers/visibleHint';
 import { initialState } from 'state/initialState';
 
 class CardWord {
@@ -112,16 +115,15 @@ class CardWord {
       const checkSentence = initialState.currentSentence?.textExample;
 
       const resultSentence = arrayWords
-        .map((wordElement) => {
-          if (!(wordElement instanceof HTMLElement)) {
-            throw new Error('Element not found');
-          }
-          return wordElement.dataset.word;
-        })
+        .map((wordElement) => instanceHtml(wordElement).dataset.word)
         .join(' ');
 
       if (checkSentence === resultSentence) {
         transformButton('continue');
+        completeSectence(initialState.currentSentence?.id);
+        if (!initialState.hintVisible) {
+          visibleHint(false);
+        }
       }
       changeDisabledButton(false);
     }

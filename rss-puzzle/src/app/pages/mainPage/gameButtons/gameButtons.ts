@@ -10,6 +10,7 @@ import instanceHtml from 'helpers/instanceHtml';
 import removeAttribute from 'helpers/removeAttribute';
 import checkFullSentence from 'helpers/checkFullSentence';
 import './gameButtons.scss';
+import visibleHint from 'helpers/visibleHint';
 
 class GameButtons {
   draw(root: HTMLElement): void {
@@ -74,15 +75,18 @@ class GameButtons {
   }
 
   continueGame(): void {
-    const resultBlock = document.querySelector(
+    if (!initialState.hintVisible) {
+      console.log(!initialState.hintVisible);
+      visibleHint(true);
+    }
+
+    const resultBlock = findElement(
       `[data-result_id='${initialState.currentSentence?.id}']`
     );
 
-    if (resultBlock) {
-      resultBlock.classList.add('completed');
-      const words = [...resultBlock.querySelectorAll('.card-word')];
-      [...words].forEach((el) => removeAttribute(el, 'style'));
-    }
+    resultBlock.classList.add('completed');
+    const words = [...resultBlock.querySelectorAll('.card-word')];
+    [...words].forEach((el) => removeAttribute(el, 'style'));
 
     initialState.updateCurrentSentence();
     this.changeHint(initialState.currentSentence?.textExampleTranslate || '');
