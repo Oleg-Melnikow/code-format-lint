@@ -1,10 +1,11 @@
 import createElement from 'helpers/createElement';
-import { getRounds, initialState } from 'state/initialState';
+import { getRounds, getSound, initialState } from 'state/initialState';
 import { BaseClass } from 'types/interfaces';
 import CardWord from 'components/cardWord/cardWord';
 import wordsRandomOrder from 'helpers/wordsRandomOrder';
 import GameButtons from '../gameButtons/gameButtons';
 import HintBlock from '../hintBlock/hintBlock';
+import SoundButton from '../SoundButton/SoundButton';
 import './gameBlock.scss';
 
 class GameBlock {
@@ -14,12 +15,15 @@ class GameBlock {
 
   hint: BaseClass;
 
+  soundButton: BaseClass;
+
   constructor() {
     this.containerResults = createElement('div', {
       class: 'results-container',
     });
     this.gameButtons = new GameButtons();
     this.hint = new HintBlock();
+    this.soundButton = new SoundButton();
   }
 
   async draw(root: HTMLElement): Promise<void> {
@@ -29,6 +33,7 @@ class GameBlock {
     const cardsBlock = createElement('div', { class: 'source-block' });
     const resultBlock = this.createResultBlock();
 
+    this.soundButton.draw(container);
     this.hint.draw(container);
 
     this.renderBlockWords(resultBlock, cardsBlock);
@@ -49,6 +54,7 @@ class GameBlock {
     source: HTMLElement | null
   ): void {
     if (initialState.currentSentence) {
+      getSound(initialState.currentSentence.audioExample);
       const { textExample } = initialState.currentSentence;
       const wordArray = textExample.split(' ');
       console.log(textExample);
