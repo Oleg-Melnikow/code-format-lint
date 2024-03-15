@@ -18,8 +18,10 @@ type StateApp = {
   currentSentence: WordType | null;
   gameStatus: GameStatusType;
   hintVisible: boolean;
+  soundVisible: boolean;
   currentUrlAudio: string;
   chnageHindVisible(): void;
+  chnageSoundVisible(): void;
   changeGameStatus(data: GameStatusType): void;
   updateCurrentSentence(): void;
 };
@@ -57,6 +59,7 @@ const initialState: StateApp = {
   currentRound: null,
   currentSentence: null,
   hintVisible: true,
+  soundVisible: true,
   currentUrlAudio: '',
 
   updateState(user, page?: PageType): void {
@@ -89,6 +92,10 @@ const initialState: StateApp = {
 
   chnageHindVisible(): void {
     this.hintVisible = !this.hintVisible;
+  },
+
+  chnageSoundVisible(): void {
+    this.soundVisible = !this.soundVisible;
   },
 };
 

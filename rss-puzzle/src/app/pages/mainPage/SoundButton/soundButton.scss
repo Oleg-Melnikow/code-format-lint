@@ -11,6 +11,11 @@
   transition: 0.5s;
   transform: scale(1);
 
+  &.hide {
+    opacity: 0;
+    visibility: hidden;
+  }
+
   &:hover {
     cursor: pointer;
     border-color: #fff;
