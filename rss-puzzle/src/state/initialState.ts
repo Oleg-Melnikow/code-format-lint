@@ -1,3 +1,4 @@
+import { findElement } from 'helpers/findElement';
 import { State, WordType } from 'types/interfaces';
 
 type PageType = 'login' | 'start' | 'main';
@@ -17,6 +18,7 @@ type StateApp = {
   currentSentence: WordType | null;
   gameStatus: GameStatusType;
   hintVisible: boolean;
+  currentUrlAudio: string;
   chnageHindVisible(): void;
   changeGameStatus(data: GameStatusType): void;
   updateCurrentSentence(): void;
@@ -55,6 +57,7 @@ const initialState: StateApp = {
   currentRound: null,
   currentSentence: null,
   hintVisible: true,
+  currentUrlAudio: '',
 
   updateState(user, page?: PageType): void {
     this.user = user;
@@ -100,4 +103,21 @@ async function getRounds(): Promise<void> {
     .catch((err) => new Error(err));
 }
 
-export { initialState, getRounds };
+async function getSound(audioExample: string): Promise<void> {
+  console.log(audioExample);
+  const url = `https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/${audioExample}`;
+  await fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const urlFile = URL.createObjectURL(blob);
+      initialState.currentUrlAudio = urlFile;
+      const source = findElement('.source');
+      if (!(source instanceof HTMLSourceElement)) {
+        throw new Error('ss');
+      }
+      source.src = urlFile;
+    })
+    .catch((err) => new Error(err));
+}
+
+export { initialState, getRounds, getSound };
