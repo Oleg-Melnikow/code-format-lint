@@ -1,5 +1,5 @@
 import createElement from 'helpers/createElement';
-import { initialState } from 'state/initialState';
+import { getSound, initialState } from 'state/initialState';
 import CardWord from 'components/cardWord/cardWord';
 import wordsRandomOrder from 'helpers/wordsRandomOrder';
 import CustomButton from 'components/customButton/customButton';
@@ -99,6 +99,8 @@ class GameButtons {
     findElement('.results-container').append(resultItem);
     transformButton('check');
     changeDisabledButton(true);
+
+    getSound(initialState.currentSentence?.audioExample || '');
   }
 
   checkSentence(event: Event): void {

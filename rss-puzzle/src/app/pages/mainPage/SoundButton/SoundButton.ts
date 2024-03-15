@@ -18,34 +18,43 @@ class SoundButton {
     const button = createElement('div', { class: 'sound-button' });
     const icon = createElement('i', { class: 'fa-solid fa-volume-high' });
 
-    button.addEventListener('click', this.playSound.bind(this));
+    button.addEventListener('click', (event) =>
+      this.playSound.bind(this)(event)
+    );
 
     button.append(icon);
     root.append(button);
     this.audio.draw(root);
   }
 
-  playSound(): void {
-    const sound = findElement('.sound');
-    if (!(sound instanceof HTMLAudioElement)) {
-      throw new Error('ss');
+  checkInstance(element: HTMLElement): HTMLAudioElement {
+    if (!(element instanceof HTMLAudioElement)) {
+      throw new Error('Element is not an audio');
     }
+    return element;
+  }
 
-    sound.addEventListener('durationchange', (event) => {
-      if (!(event.target instanceof HTMLAudioElement)) {
-        throw new Error('ss');
+  playSound(event: Event): void {
+    if (event.currentTarget instanceof HTMLElement) {
+      const sound = this.checkInstance(findElement('.sound'));
+      const button = event.currentTarget;
+
+      sound.addEventListener('durationchange', (eventSound) => {
+        if (!(eventSound.target instanceof HTMLAudioElement)) {
+          throw new Error('Element is not an audio');
+        }
+        setTimeout(() => {
+          this.isPlay = false;
+          button.classList.remove('play');
+        }, eventSound.target.duration * 1000);
+      });
+
+      if (!this.isPlay) {
+        sound.load();
+        sound.play();
+        this.isPlay = true;
+        button.classList.add('play');
       }
-      setTimeout(() => {
-        this.isPlay = false;
-      }, sound.duration * 1000);
-      console.log(event.target.duration);
-    });
-
-    console.log(sound);
-    if (!this.isPlay) {
-      sound.load();
-      sound.play();
-      this.isPlay = true;
     }
   }
 }
