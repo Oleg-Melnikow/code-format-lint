@@ -122,8 +122,12 @@ class CardWord {
         transformButton('continue');
         completeSectence(initialState.currentSentence?.id);
         if (!initialState.hintVisible) {
-          visibleHint(false);
+          visibleHint(false, 'hint');
         }
+        if (!initialState.soundVisible) {
+          visibleHint(false, 'sound');
+        }
+        changeDisabledButton(true, '.complete-btn');
       }
       changeDisabledButton(false);
     }

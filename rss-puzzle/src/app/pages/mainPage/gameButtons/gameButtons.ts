@@ -76,8 +76,11 @@ class GameButtons {
 
   continueGame(): void {
     if (!initialState.hintVisible) {
-      console.log(!initialState.hintVisible);
-      visibleHint(true);
+      visibleHint(true, 'hint');
+    }
+
+    if (!initialState.soundVisible) {
+      visibleHint(true, 'sound');
     }
 
     const resultBlock = findElement(
