@@ -16,6 +16,8 @@ type StateApp = {
   currentRound: Round | null;
   currentSentence: WordType | null;
   gameStatus: GameStatusType;
+  hintVisible: boolean;
+  chnageHindVisible(): void;
   changeGameStatus(data: GameStatusType): void;
   updateCurrentSentence(): void;
 };
@@ -52,6 +54,7 @@ const initialState: StateApp = {
   roundsData: null,
   currentRound: null,
   currentSentence: null,
+  hintVisible: true,
 
   updateState(user, page?: PageType): void {
     this.user = user;
@@ -79,6 +82,10 @@ const initialState: StateApp = {
       this.currentSentence = current;
       console.log(this.currentSentence.textExample);
     }
+  },
+
+  chnageHindVisible(): void {
+    this.hintVisible = !this.hintVisible;
   },
 };
 

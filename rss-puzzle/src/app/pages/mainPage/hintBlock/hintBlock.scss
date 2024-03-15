@@ -3,6 +3,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  &.hide {
+    visibility: hidden;
+  }
 
   &-content {
     font-size: 20px;
