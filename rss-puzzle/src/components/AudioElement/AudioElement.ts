@@ -2,7 +2,6 @@ import { initialState } from 'state/initialState';
 
 class AudioElement {
   draw(root: HTMLElement): void {
-    console.log(root);
     const audio = document.createElement('audio');
     audio.classList.add('sound');
     const source = document.createElement('source');
