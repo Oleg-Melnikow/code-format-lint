@@ -1,0 +1,29 @@
+.select {
+  width: 200px;
+  height: 35px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  background: #aaa;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.8);
+
+  font-size: 18px;
+  text-transform: capitalize;
+  option {
+    padding: 5px;
+  }
+  option:checked,
+  option:hover {
+    background: #444;
+    color: #cffd16;
+    cursor: pointer;
+  }
+}
+.controls {
+  display: flex;
+  width: 100%;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+}

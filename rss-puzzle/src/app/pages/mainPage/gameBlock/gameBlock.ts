@@ -1,6 +1,5 @@
 import createElement from 'helpers/createElement';
-import visibleHint from 'helpers/visibleHint';
-import { getRounds, getSound, initialState } from 'state/initialState';
+import { getSound, initialState } from 'state/initialState';
 import { BaseClass } from 'types/interfaces';
 import CardWord from 'components/cardWord/cardWord';
 import wordsRandomOrder from 'helpers/wordsRandomOrder';
@@ -27,8 +26,7 @@ class GameBlock {
     this.soundButton = new SoundButton();
   }
 
-  async draw(root: HTMLElement): Promise<void> {
-    await getRounds();
+  draw(root: HTMLElement): void {
     const { containerResults } = this;
     const container = createElement('div', { class: 'game-container' });
     const cardsBlock = createElement('div', { class: 'source-block' });
@@ -48,8 +46,6 @@ class GameBlock {
     this.gameButtons.draw(container);
 
     root.append(container);
-
-    this.checkControls();
   }
 
   renderBlockWords(
@@ -81,18 +77,6 @@ class GameBlock {
       class: 'result-block',
       'data-result_id': `${resultBlockId}`,
     });
-  }
-
-  private checkControls(): void {
-    const controls = localStorage.getItem('rss-puzzle-controls');
-
-    if (controls) {
-      const { soundVisible, hintVisible } = JSON.parse(controls);
-      initialState.soundVisible = soundVisible;
-      initialState.hintVisible = hintVisible;
-      visibleHint(!soundVisible, 'sound');
-      visibleHint(!hintVisible, 'hint');
-    }
   }
 }
 

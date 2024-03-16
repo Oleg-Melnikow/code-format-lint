@@ -1,7 +1,5 @@
 import createElement from 'helpers/createElement';
-import { getSound, initialState } from 'state/initialState';
-import CardWord from 'components/cardWord/cardWord';
-import wordsRandomOrder from 'helpers/wordsRandomOrder';
+import { initialState } from 'state/initialState';
 import CustomButton from 'components/customButton/customButton';
 import changeDisabledButton from 'helpers/changeDisabledButton';
 import transformButton from 'helpers/transformButton';
@@ -9,8 +7,9 @@ import { findElement } from 'helpers/findElement';
 import instanceHtml from 'helpers/instanceHtml';
 import removeAttribute from 'helpers/removeAttribute';
 import checkFullSentence from 'helpers/checkFullSentence';
-import './gameButtons.scss';
 import visibleHint from 'helpers/visibleHint';
+import { updatePlayingField } from 'helpers/updatePlayingField';
+import './gameButtons.scss';
 
 class GameButtons {
   draw(root: HTMLElement): void {
@@ -45,35 +44,6 @@ class GameButtons {
     root.append(container);
   }
 
-  renderBlockWords(
-    result: HTMLElement | null,
-    source: HTMLElement | null
-  ): void {
-    if (initialState.currentSentence) {
-      const { textExample } = initialState.currentSentence;
-      const wordArray = textExample.split(' ');
-      initialState.changeGameStatus({ count: 0, limit: wordArray.length - 1 });
-
-      wordsRandomOrder(wordArray).forEach((word, position) => {
-        const card = new CardWord(word);
-        if (result) {
-          card.draw(result, 'result', position);
-        }
-        if (source) {
-          card.draw(source, 'source', position);
-        }
-      });
-    }
-  }
-
-  createResultBlock(): HTMLElement {
-    const resultBlockId = initialState.currentSentence?.id;
-    return createElement('div', {
-      class: 'result-block',
-      'data-result_id': `${resultBlockId}`,
-    });
-  }
-
   continueGame(): void {
     if (!initialState.hintVisible) {
       visibleHint(true, 'hint');
@@ -92,18 +62,7 @@ class GameButtons {
     [...words].forEach((el) => removeAttribute(el, 'style'));
 
     initialState.updateCurrentSentence();
-    this.changeHint(initialState.currentSentence?.textExampleTranslate || '');
-
-    const sourceBlock = findElement('.source-block');
-    sourceBlock.innerHTML = '';
-    const resultItem = this.createResultBlock();
-    this.renderBlockWords(resultItem, sourceBlock);
-
-    findElement('.results-container').append(resultItem);
-    transformButton('check');
-    changeDisabledButton(true);
-
-    getSound(initialState.currentSentence?.audioExample || '');
+    updatePlayingField();
   }
 
   checkSentence(event: Event): void {
@@ -111,7 +70,6 @@ class GameButtons {
     if (!(event.target instanceof HTMLElement)) {
       throw new Error('Element not found');
     }
-    changeDisabledButton(false, '.complete-btn');
     const { button } = event.target.dataset;
 
     if (initialState.currentSentence && button === 'check') {
@@ -192,11 +150,6 @@ class GameButtons {
     });
 
     return resultBlock;
-  }
-
-  changeHint(hint: string): void {
-    const hintElement = findElement('.hint-content');
-    hintElement.textContent = hint;
   }
 }
 

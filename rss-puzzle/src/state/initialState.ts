@@ -25,6 +25,7 @@ type StateApp = {
   chnageSoundVisible(): void;
   changeGameStatus(data: GameStatusType): void;
   updateCurrentSentence(): void;
+  updateCurrentRound(round: Round): void;
 };
 
 type LevelDataType = {
@@ -80,6 +81,11 @@ const initialState: StateApp = {
   changeGameStatus(data: GameStatusType): void {
     this.gameStatus = data;
   },
+  updateCurrentRound(round: Round): void {
+    this.currentRound = round;
+    const [sentence] = round.words;
+    this.currentSentence = sentence;
+  },
   updateCurrentSentence(): void {
     if (this.currentSentence && this.currentRound) {
       const { id } = this.currentSentence;
@@ -102,9 +108,9 @@ const initialState: StateApp = {
   },
 };
 
-async function getRounds(): Promise<void> {
+async function getRounds(level = 1): Promise<void> {
   await fetch(
-    'https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/data/wordCollectionLevel1.json'
+    `https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/data/wordCollectionLevel${level}.json`
   )
     .then((response) => response.json())
     .then((data: RoundsData) => {
@@ -114,7 +120,6 @@ async function getRounds(): Promise<void> {
 }
 
 async function getSound(audioExample: string): Promise<void> {
-  console.log(audioExample);
   const url = `https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/${audioExample}`;
   await fetch(url)
     .then((response) => response.blob())
@@ -123,7 +128,7 @@ async function getSound(audioExample: string): Promise<void> {
       initialState.currentUrlAudio = urlFile;
       const source = findElement('.source');
       if (!(source instanceof HTMLSourceElement)) {
-        throw new Error('ss');
+        throw new Error('source not HTMLSourceElement');
       }
       source.src = urlFile;
     })
