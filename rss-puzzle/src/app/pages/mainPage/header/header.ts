@@ -34,6 +34,7 @@ class Header {
 
   singOut(): void {
     localStorage.removeItem('rss-puzzle-login');
+    localStorage.removeItem('rss-puzzle-controls');
     initialState.updateState(null, 'login');
     this.callback('login');
   }
