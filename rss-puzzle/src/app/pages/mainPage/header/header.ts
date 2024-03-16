@@ -20,11 +20,14 @@ class Header {
     const hintBtn = createElement('button', { class: 'hint-btn' }, 'Hint');
     this.addIconToButton(hintBtn, hintIcon, 'hint');
 
+    const sound = createElement('button', { class: 'sound-btn' });
+    sound.append(createElement('i', { class: 'fa-solid fa-music' }));
+
     logoutBtn.addEventListener('click', this.singOut.bind(this));
     hintBtn.addEventListener('click', (event) => this.hideHint(event));
+    sound.addEventListener('click', (event) => this.hideSound(event));
 
-    header.append(hintBtn);
-    header.append(logoutBtn);
+    [sound, hintBtn, logoutBtn].forEach((button) => header.append(button));
 
     root.append(header);
   }
@@ -36,14 +39,25 @@ class Header {
   }
 
   hideHint(event: Event): void {
-    if (!(event.target instanceof HTMLElement)) {
+    if (!(event.currentTarget instanceof HTMLElement)) {
       throw new Error('Element not found');
     }
-    event.target.classList.toggle('hide');
+    event.currentTarget.classList.toggle('hide');
 
     const hint = findElement('.hint');
     hint.classList.toggle('hide');
     initialState.chnageHindVisible();
+  }
+
+  hideSound(event: Event): void {
+    if (!(event.currentTarget instanceof HTMLElement)) {
+      throw new Error('Element not found');
+    }
+    event.currentTarget.classList.toggle('hide');
+
+    const soundButton = findElement('.sound-button');
+    soundButton.classList.toggle('hide');
+    initialState.chnageSoundVisible();
   }
 
   addIconToButton(button: HTMLElement, image: string, name: string): void {

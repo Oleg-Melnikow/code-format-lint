@@ -27,7 +27,10 @@
 }
 
 .logout-btn,
-.hint-btn {
+.hint-btn,
+.sound-btn {
+  height: 35px;
+  min-width: 35px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,6 +43,7 @@
   font-size: 18px;
   font-weight: bold;
   &:hover {
+    color: #fff;
     transition: 0.5s ease-in;
     cursor: pointer;
     background: #2ee59d;
@@ -52,6 +56,7 @@
 }
 
 .logout-icon,
-.hint-icon {
+.hint-icon,
+.sound-icon {
   height: 25px;
 }
