@@ -3,12 +3,17 @@ import { initialState } from 'state/initialState';
 import icon from 'assets/logout.svg';
 import hintIcon from 'assets/hint.png';
 import { findElement } from 'helpers/findElement';
+import { BaseClass } from 'types/interfaces';
+import SelectLevel from '../selectLevel/selectLevel';
 
 class Header {
   callback: (padeId: string) => void;
 
+  selectLevel: BaseClass;
+
   constructor(callback: (padeId: string) => void) {
     this.callback = callback;
+    this.selectLevel = new SelectLevel();
   }
 
   draw(root: HTMLElement): void {
@@ -26,6 +31,8 @@ class Header {
     logoutBtn.addEventListener('click', this.singOut.bind(this));
     hintBtn.addEventListener('click', (event) => this.hideHint(event));
     sound.addEventListener('click', (event) => this.hideSound(event));
+
+    this.selectLevel.draw(header);
 
     [sound, hintBtn, logoutBtn].forEach((button) => header.append(button));
 
