@@ -1,4 +1,5 @@
 import createElement from 'helpers/createElement';
+import visibleHint from 'helpers/visibleHint';
 import { getRounds, getSound, initialState } from 'state/initialState';
 import { BaseClass } from 'types/interfaces';
 import CardWord from 'components/cardWord/cardWord';
@@ -47,6 +48,8 @@ class GameBlock {
     this.gameButtons.draw(container);
 
     root.append(container);
+
+    this.checkControls();
   }
 
   renderBlockWords(
@@ -78,6 +81,18 @@ class GameBlock {
       class: 'result-block',
       'data-result_id': `${resultBlockId}`,
     });
+  }
+
+  private checkControls(): void {
+    const controls = localStorage.getItem('rss-puzzle-controls');
+
+    if (controls) {
+      const { soundVisible, hintVisible } = JSON.parse(controls);
+      initialState.soundVisible = soundVisible;
+      initialState.hintVisible = hintVisible;
+      visibleHint(!soundVisible, 'sound');
+      visibleHint(!hintVisible, 'hint');
+    }
   }
 }
 

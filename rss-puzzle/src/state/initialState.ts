@@ -1,4 +1,5 @@
 import { findElement } from 'helpers/findElement';
+import { saveControlsButton } from 'helpers/saveUserData';
 import { State, WordType } from 'types/interfaces';
 
 type PageType = 'login' | 'start' | 'main';
@@ -92,10 +93,12 @@ const initialState: StateApp = {
 
   chnageHindVisible(): void {
     this.hintVisible = !this.hintVisible;
+    saveControlsButton();
   },
 
   chnageSoundVisible(): void {
     this.soundVisible = !this.soundVisible;
+    saveControlsButton();
   },
 };
 

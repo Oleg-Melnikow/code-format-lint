@@ -9,4 +9,12 @@ function saveUserData(state: State, currentPage: string): void {
   initialState.updateState(state);
 }
 
-export { saveUserData };
+function saveControlsButton(): void {
+  const { hintVisible, soundVisible } = initialState;
+  localStorage.setItem(
+    'rss-puzzle-controls',
+    JSON.stringify({ hintVisible, soundVisible })
+  );
+}
+
+export { saveUserData, saveControlsButton };
